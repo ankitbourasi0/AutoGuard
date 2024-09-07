@@ -13,7 +13,7 @@ const BottomBar: React.FC = () => {
   return (
     
       <View style={styles.footer}>
-      <TouchableOpacity style={styles.footerButton}>
+      <TouchableOpacity style={styles.footerButton} onPress={()=> navigation.navigate("ShiftScheduleScreen")}>
         <Text style={styles.footerButtonText}>Shift</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.sosButton} onPress={()=> navigation.navigate("SOS")}>

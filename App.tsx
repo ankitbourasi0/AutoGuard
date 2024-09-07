@@ -1,25 +1,24 @@
 import React from 'react';
-import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { NavigationContainer, NavigationProp, useNavigation } from '@react-navigation/native';
+import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { NavigationContainer, NavigationProp, useNavigation,CommonActions } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import HomeScreen from './screens/HomeScreen';
-import NotificationsScreen from './screens/NotificationsScreen';
+
 import PayslipsScreen from './screens/PaySlipsScreen';
 import MyProfileScreen from './screens/MyProfileScreen';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { RootStackParamList } from './types/navigation';
 import EntryScreen from './screens/EntryScreen';
-import GuardActivityScreen from './screens/GuardActivityScreen ';
+import GuardActivityScreen from './screens/GuardActivityScreen';
 import ViewMenuScreen from './screens/ViewMenuScreen';
 import ApplyForLeaveScreen from './screens/ApplyForLeaveScreen';
-import MyLeaveScreen from './screens/MyLeaveScreen';
+// import MyLeaveScreen from './screens/MyLeaveScreen';
 import LoginScreen from './screens/LoginScreen';
-import ShiftScheduleScreen from './screens/ShiftScheduleScreen';
+// import ShiftScheduleScreen from './screens/ShiftScheduleScreen.tsx';
 import VehicleInspectionScreen from './screens/VehicleInspection';
-import InspectionHistoryScreen from './screens/InspectionHistory';
 import VehicleDetails from './screens/VehicleDetails';
 import PocketBookMainScreen from './screens/PocketBookMain';
-import NewPocketBookEntry from './screens/NewPocketBookEntry';
+// import NewPocketBookEntry from './screens/NewPocketBookEntry';
 import AllPocketBookEntries from './screens/AllPocketBookEntries';
 import PocketBookEntry from './screens/PocketBookEntry';
 import ObservationBookMain from './screens/ObservationBookMain';
@@ -27,17 +26,44 @@ import OBBookInformationScreen from './screens/ObBookInformation';
 import CrimeSceneMain from './screens/CrimeSceneMain';
 import CrimeSceneInformation from './screens/CrimeSceneInformation';
 import CommonEntryForm from './components/CommonEntryForm';
-import AllCrimeSceneBookEntries from './screens/AllCrimeSceneBookEntries';
 import NewVehicleInspection from './screens/NewVehicleInspection';
 import SOS from './screens/SOS';
 import Notifications from './components/Notifications';
-import ShiftStartScreen from './screens/ShiftStartScreen';
+// import ShiftStartScreen from './screens/ShiftStartScreen.tsx';
+import  useAuthStore  from './states/authStore';
+import NewPocketBookEntry from './screens/PocketBookEntry';
+import NewCrimeSceneBookEntryScreen from './screens/NewCrimeSceneBookEntryScreen';
+import AllCrimeSceneBookEntriesScreen from './screens/AllCrimeSceneBookEntries';
+import InspectionHistoryScreen from './screens/InspectionHistory';
+import MyLeaveScreen from './screens/MyLeaveScreen';
+import ShiftList from './screens/ShiftScheduleScreen';
+// import ShiftStartScreen from './screens/ShiftStartScreen';
 
 const Drawer = createDrawerNavigator<RootStackParamList>(); 
 
 type DrawerNavigationProp = NavigationProp<RootStackParamList>
 function CustomDrawerContent(props: any) {
   const navigation = useNavigation<DrawerNavigationProp>();
+  const { logout } = useAuthStore();
+  const handleLogout = () => {
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to log out?",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Logout", onPress: () => {
+            logout();
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              })
+            );
+          }
+        }
+      ]
+    );
+  };
   return (
     <DrawerContentScrollView {...props}>
       <View style={styles.profileSection}>
@@ -75,7 +101,7 @@ function CustomDrawerContent(props: any) {
         labelStyle={styles.drawerLabel}
       />
       <View style={styles.logoutSection}>
-        <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate("Login")}>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Icon name="sign-out-alt" size={20} color="#FFF" />
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
@@ -100,8 +126,8 @@ function App() {
         >
           <Drawer.Screen name="Login" component={LoginScreen} />
           <Drawer.Screen name="Home" component={HomeScreen} />
-          <Drawer.Screen name="ShiftScheduleScreen" component={ShiftScheduleScreen} />
-          <Drawer.Screen name="ShiftStartScreen" component={ShiftStartScreen} />
+          <Drawer.Screen name="ShiftScheduleScreen" component={ShiftList} /> 
+          {/* <Drawer.Screen name="ShiftStartScreen" component={ShiftStartScreen} />  */}
 
           <Drawer.Screen name="Notifications" component={Notifications} />
           <Drawer.Screen name="SOS" component={SOS} />
@@ -117,8 +143,11 @@ function App() {
           <Drawer.Screen name="ObBookInformation" component={OBBookInformationScreen} />
           <Drawer.Screen name="CrimeSceneMain" component={CrimeSceneMain} />
           <Drawer.Screen name="CrimeSceneInformation" component={CrimeSceneInformation} />
-          <Drawer.Screen name="CommonEntryForm" component={CommonEntryForm} />
-          <Drawer.Screen name="AllCrimeSceneBookEntries" component={AllCrimeSceneBookEntries} />
+          <Drawer.Screen name="NewCrimeSceneBookEntry" component={NewCrimeSceneBookEntryScreen} />
+
+          
+          {/* <Drawer.Screen name="CommonEntryForm" component={CommonEntryForm} /> */}
+          <Drawer.Screen name="AllCrimeSceneBookEntries" component={AllCrimeSceneBookEntriesScreen} />
           <Drawer.Screen name="VehicleInspection" component={VehicleInspectionScreen} />
           <Drawer.Screen name="NewVehicleInspection" component={NewVehicleInspection} />
           <Drawer.Screen name="InspectionHistory" component={InspectionHistoryScreen} />

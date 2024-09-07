@@ -2,20 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 import { Appbar, Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import ScreenWrapper from './ScreenWrapper';
 
 const Notifications:React.FC =( ) => {
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Appbar.Header style={styles.appBar}>
-        <Ionicons name="menu" size={24} color="white" />
-        <View style={styles.logoContainer}>
-          <View style={styles.logo}>
-            <Text style={styles.logoText}>ATG</Text>
-          </View>
-        </View>
-        <Ionicons name="notifications" size={24} color="white" />
-      </Appbar.Header>
-      
+      <ScreenWrapper>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.notificationTitle}>Notifications</Text>
         
@@ -33,6 +25,9 @@ const Notifications:React.FC =( ) => {
           </Card.Content>
         </Card>
       </ScrollView>
+      </ScreenWrapper>
+      
+     
     </SafeAreaView>
   );
 }
