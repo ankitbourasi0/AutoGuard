@@ -4,8 +4,8 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ScreenWrapper from '../components/ScreenWrapper';
 import { NavigationProps, RootStackParamList } from '../types/navigation';
-import TextButton from '../common/TextButton';
-import SearchField from '../common/SearchField';
+import TextButton from '../utils/TextButton';
+import SearchField from '../utils/SearchField';
 
 
 

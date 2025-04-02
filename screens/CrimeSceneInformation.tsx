@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ScreenWrapper from '../components/ScreenWrapper';
-import HeaderText from '../common/HeaderText'; // Assuming you have a common header component
+import HeaderText from '../utils/HeaderText'; // Assuming you have a common header component
 import { NavigationProps } from '../types/navigation';
 
 const CrimeSceneInfo: React.FC = () => {

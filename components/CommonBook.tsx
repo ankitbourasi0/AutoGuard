@@ -4,8 +4,8 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ScreenWrapper from './ScreenWrapper';
-import BigTextButton from '../common/BigTextButton';
-import HeaderText from '../common/HeaderText';
+import BigTextButton from '../utils/BigTextButton';
+import HeaderText from '../utils/HeaderText';
 import { NavigationProps } from '../types/navigation';
 
 interface CommonBookProps {

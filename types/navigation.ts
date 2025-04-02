@@ -23,6 +23,7 @@ interface  CommonBook {
   }
   
 export type RootStackParamList = {
+  
     Login: undefined;
     Home: undefined; 
     ShiftScheduleScreen: undefined; 
@@ -31,6 +32,7 @@ export type RootStackParamList = {
     SOS: undefined;
     Payslips: undefined;
     MyProfile: undefined;
+    CameraModule:undefined;
     GuardActivity: undefined;
     Entry: undefined;
     CommonBook: CommonBook

@@ -1,48 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Button, StyleSheet, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-// import  useAuthStore  from '../states/authStore';
-import { loginToBackend } from '../services/authServices';
 import { useNavigation } from '@react-navigation/native';
-import { NavigationProps } from '../types/navigation';
 import { CommonActions } from '@react-navigation/native';
-import useAuthStore from '../states/authStore';
+import { useAuthStore } from '../states/index';
 
 const LoginScreen: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const { login } = useAuthStore();
-  const navigation = useNavigation<NavigationProps>()
+  const navigation = useNavigation();
 
+  // Get login and requestPasswordReset from auth store
+  const { login, requestPasswordReset } = useAuthStore();
 
+  // Handle login process
   const handleLogin = async () => {
+    if (!username || !password) {
+      setError('Username and password are required.');
+      return;
+    }
     try {
-      const token = await loginToBackend(username, password);
-      login(token); // Set authenticated state and store token
-  
-      // Reset the stack and remove the login screen
+      await login(username, password);
+      // Reset the stack and navigate to the Home screen after successful login
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
-          routes: [{ name: 'Home' }], // Replace this with your authenticated screen
+          routes: [{ name: 'Home' }], // Replace with the appropriate screen for authenticated users
         })
       );
-    } catch (err) {
+    } catch (error) {
       setError('Login failed. Please check your credentials.');
     }
   };
-//   const { isAuthenticated } = useAuthStore();
-  
-//   useEffect(() => {
-//     if (isAuthenticated) {
-//       // Navigate to Home if already authenticated
-//       navigation.navigate('HomeScreen');
-//     }
-//   }, [isAuthenticated]);
 
+  // Handle forgot password logic
+  const handleForgotPassword = async () => {
+    if (!username) {
+      Alert.alert('Error', 'Please enter your username first.');
+      return;
+    }
+    try {
+      await requestPasswordReset(username);
+      Alert.alert('Password Reset', 'If an account exists for this username, you will receive further instructions via email.');
+    } catch (error) {
+      Alert.alert('Error', 'Failed to request password reset. Please try again later.');
+    }
+  };
 
+  // Toggle password visibility
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -51,9 +58,10 @@ const LoginScreen: React.FC = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Welcome Back</Text>
       <Text style={styles.subtitle}>Login to continue</Text>
-      
+
+      {/* Display error if exists */}
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
-      
+
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -62,7 +70,7 @@ const LoginScreen: React.FC = () => {
         autoCapitalize="none"
         placeholderTextColor="#8E8E8E"
       />
-      
+
       <View style={styles.passwordContainer}>
         <TextInput
           style={styles.passwordInput}
@@ -77,10 +85,11 @@ const LoginScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleForgotPassword}>
         <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
       </TouchableOpacity>
 
+      {/* Trigger login on button press */}
       <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
         <Text style={styles.loginButtonText}>Login</Text>
       </TouchableOpacity>
@@ -93,6 +102,9 @@ const LoginScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  
+ 
+ 
   container: {
     flex: 1,
     justifyContent: 'center',

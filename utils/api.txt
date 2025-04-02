@@ -1,0 +1,41 @@
+Login Screen->
+1.Login Guard using username and password
+2.Forget Password : send request to the admin and they will contact
+
+Logout Button:-> Logout
+
+on navigate Gaurd Activity Screen->
+1.Check the guard is internet connnection is active or not, 
+if not active: dialog a message, 
+if active: check the guard coordinates, guard coordinates should under  office location 
+until the coordinates matches the office location they will unable to see their Activities
+if the coordniates match with the office location 
+
+2.facial recognition by taking photo, does photo match navigate to view guard activity Screen
+if not matches retake 3 chances until matches, after 3 chances countdown timer start of 30 sec before next try 
+
+Pocket Book Screen->
+Pocket Book New Entry:
+1.Fill the book details: Name, ID NO, Company No., PSIRA, Branch, Region,
+then New Pocket Book Entry: Ref Number, Subject, Time Date, Location, Observation, Media
+2. View the specific Book entry, also can add comment with media in the specific entry
+
+Shift Screen->
+1. View all shift of each day of [start date, end date ] of week
+2. select the current shift match with the time, a day can have either 1 shift or 2 shift, and start
+3. View weapon Registry
+4. Request  specific weapon
+5. Start the shift, shift status turn in to progress
+6. end shift shift status turn to complete
+
+My Profile Screen->
+1.Update the profile Pic
+2.View Certificate get all details like: ID Number , PSIRA, reg number, Date of Registration, Date of issue, Valid Until, Certificate Number,
+3.View Firearm and competency license: get all the details, Id number, Serial number of gun, gun name, calibre, type of gun, model
+4.View vehicle license: get all the details like:name, license number, valid date, code,
+5.View Id/Passport: get details:surname, firstname,Id number, DOB
+6.View Medicle aid: get details: media aid name, name, mem no.
+7.View Provident fund: get details: provident fund name, name, mem no., plan
+
+Notifications Screen->
+Get all notifications

@@ -5,7 +5,7 @@ import { View, StyleSheet } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { NavigationProps, RootStackParamList } from '../types/navigation';
 import ScreenWrapper from '../components/ScreenWrapper';
-import IconButton from '../common/IconButton';
+import IconButton from '../utils/IconButton';
 
 
 
@@ -19,7 +19,7 @@ const HomeScreen: React.FC = () => {
           iconName="clipboard-list"
           title="Guard Activities"
           description="Shift, shift entry and vehicle inspection"
-          onPress={() => navigation.navigate('GuardActivity')}
+          onPress={() => navigation.navigate('CameraModule')}
         />
         <IconButton
           iconName="user-shield"
