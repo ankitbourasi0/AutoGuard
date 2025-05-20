@@ -12,7 +12,7 @@ const ObBookInformation: React.FC = () => {
 
   const handleAcknowledge = () => {
     setShowModal(false);
-    navigation.navigate("NewCrimeSceneBookEntry")
+    navigation.navigate("ObservationBookEntry")
   };
 
   const handleAccept = () => {

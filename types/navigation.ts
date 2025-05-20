@@ -1,4 +1,5 @@
 import {NavigationProp} from '@react-navigation/native';
+import {  ShiftItem } from '../screens/ShiftScheduleScreen';
 export interface Leave {
     leaveType: string;
     startDate: string | null;
@@ -16,18 +17,18 @@ interface  CommonBook {
     allEntriesScreen: keyof RootStackParamList;
   };
 
-  interface ShiftTime {
-    startTime: string;
-    endTime: string;
-    status: 'not_started' | 'ongoing' | 'completed';
-  }
+  // interface ShiftTime {
+  //   startTime: string;
+  //   endTime: string;
+  //   status: 'not_started' | 'ongoing' | 'completed';
+  // }
   
 export type RootStackParamList = {
   
     Login: undefined;
     Home: undefined; 
     ShiftScheduleScreen: undefined; 
-    ShiftStartScreen: {date: string, shift: ShiftTime }; 
+    ShiftStartScreen: {date: string, shift: ShiftItem }; 
     Notifications: undefined;
     SOS: undefined;
     Payslips: undefined;
@@ -37,11 +38,13 @@ export type RootStackParamList = {
     Entry: undefined;
     CommonBook: CommonBook
     PocketBookMain: undefined;
+    PocketBookInfoScreen:undefined;
+
     NewPocketBookEntry: undefined;
     AllPocketBookEntries: undefined;
     PocketBookEntry: undefined;
     ObservationBookMain: undefined;
-    NewObservationBooksEntry: undefined;
+    ObservationBookEntry: undefined;
     AllObservationBooksEntries: undefined;
     ObBookInformation: undefined;
     CrimeSceneMain: undefined;

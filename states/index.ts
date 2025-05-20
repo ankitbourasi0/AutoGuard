@@ -1,6 +1,7 @@
 // stores/index.ts
 
-import create from 'zustand';
+import {create} from 'zustand';
+
 import { User, Coordinates, PocketBookEntry, Shift, Weapon, WeaponRequest, GuardDocument, Notification, PocketBookComment } from '../types';
 import api from '../services';
 import { handleApiError } from '../utils';
@@ -43,9 +44,10 @@ export const useAuthStore = create<AuthStore>((set) => ({
       
     }
   },
-  requestPasswordReset: async (username) => {
+  requestPasswordReset: async (email) => {
     try {
-      await api.requestPasswordReset(username);
+      const otp = await api.requestPasswordReset(email);
+      console.log(otp)
     } catch (error) {
     handleApiError('Password reset request failed:', error);
     }
@@ -53,12 +55,14 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   initializeAuth: async () => {
     const token = await AsyncStorage.getItem('authToken');
-    if (token) {
+    const userString = await AsyncStorage.getItem('authUser');
+    if (token && userString) {
+      const user = JSON.parse(userString);
       api.setAuthToken(token);
       // validate the token here or fetch user data
-      set({ isLoggedIn: true, token });
+      set({ user, isLoggedIn: true, token });
     } else {
-      set({ isLoggedIn: false, token: null });
+      set({ user: null, isLoggedIn: false, token: null });
     }
   },
 }));

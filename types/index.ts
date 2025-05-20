@@ -1,12 +1,19 @@
 // types/index.ts
 
 export interface User {
-    id: string;
-    username: string;
-    name: string;
-  
-    role: 'guard' | 'admin';
+  business_fk: number;
+  contact_number:number;
+  employee_id: string;
+  facial_recognition_image: string
+  name: string;
+  staff_fk:number;
+  status:string;
+  surname: string;
+  token:string;
+  username: string;
+   
   }
+ 
 
 
   

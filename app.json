@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "AutoGuardApp",
+    "name": "AutoGuard",
     "slug": "AutoGuardApp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,11 +11,16 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "developmentClient": {
+      "silentLaunch": false
+    },
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "$(PRODUCT_NAME) needs access to your Camera.",
-        "NSMicrophoneUsageDescription": "$(PRODUCT_NAME) needs access to your Microphone."
+        "NSMicrophoneUsageDescription": "$(PRODUCT_NAME) needs access to your Microphone.",
+        "NSLocationWhenInUseUsageDescription": "$(PRODUCT_NAME) needs access to your location to tag entries."
+
       },
       "bundleIdentifier": "com.leo.AutoGuard"
     },
@@ -27,12 +32,15 @@
       "package": "com.leo.AutoGuard",
       "permissions": [
         "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO"
+        "android.permission.RECORD_AUDIO",
+         "ACCESS_FINE_LOCATION",
+  "ACCESS_COARSE_LOCATION"
       ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "newArchEnabled": true,
     "plugins": [
       [
         "expo-camera",

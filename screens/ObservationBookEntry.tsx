@@ -10,11 +10,9 @@ import { Image } from 'react-native';
 import axios from 'axios';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
+
 import { getCurrentLocation } from '../utils/getCurrentLocation';
-import HeaderText from '../utils/HeaderText';
-
-
-const NewPocketBookEntry: React.FC = () => {
+const NewObservationBookEntry: React.FC = () => {
   const navigation = useNavigation<NavigationProps>();
   const user = useUser()
 
@@ -44,13 +42,12 @@ const NewPocketBookEntry: React.FC = () => {
      
     }
     const gpsLocation = `${currentLocation?.latitude},${currentLocation?.longitude}`;
-    const time = entryTime;
     const requestData = {
       refNumber,
       subject,
-       entryTime: time || "00:00:00",
+      time: entryTime || "00:00:00",
       location,
-      gpsLocation: gpsLocation || '',
+      gpsLocation: gpsLocation || "",
       comment: observation,
       attachmentUrl: '',
       staffFk: user.staff_fk,
@@ -60,10 +57,11 @@ const NewPocketBookEntry: React.FC = () => {
     try {
       console.log("📤 Creating pocket book:", requestData);
       const res = await axios.post(
-        `https://autoguardapi.leogroup.tech/api/PocketBook/CreatePocketBookEntry`,
+        `https://autoguardapi.leogroup.tech/api/ObRecords/create-ob-record`,
         requestData
       );
 
+    
       if (res.status === 200) {
         Alert.alert('Success', 'Pocket Book entry created successfully!');
         setRefNumber('');
@@ -71,23 +69,35 @@ const NewPocketBookEntry: React.FC = () => {
         setEntryTime('');
         setLocation('');
         setObservation('');
-        navigation.navigate('AllPocketBookEntries');
+        navigation.navigate('AllObservationBooksEntries');
       }
     } catch (error: any) {
-      console.error("❌ Error creating pocket book:", error.response?.data || error.message);
-      Alert.alert('Error', 'Failed to create pocket book entry.');
+      const errorMessage =
+      error.response?.data?.Error || // specific error returned by backend
+      error.response?.data?.message || // fallback to message
+      error.message || // general axios error
+      'Unknown error occurred';
+  
+      console.error("❌ Error creating pocket book:", errorMessage);
+      Alert.alert('Error', `Failed to create pocket book entry. ${error.response?.data?.Error}`);
+      setRefNumber('');
+      setSubject('');
+      setEntryTime('');
+      setLocation('');
+      setObservation('');
+    
     }
   }
 
   return (
-    <ScreenWrapper>
-    <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.navigate("Entry")}>
-        <Icon name="arrow-back-outline" size={24} color="#000" />
-      </TouchableOpacity>
-      <HeaderText title={"New Pocket Book Entry"} />
-</View>
-<ScrollView contentContainerStyle={styles.wrapper}>
+    <ScrollView contentContainerStyle={styles.wrapper}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.navigate("PocketBookMain")} style={styles.backButton}>
+          <Icon name="arrow-back" size={24} color="#000" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>New Observation Book Entry</Text>
+      </View>
+
       <View style={styles.form}>
         <Text style={styles.label}>Ref Number</Text>
         <TextInput style={styles.input} value={refNumber} onChangeText={setRefNumber} />
@@ -147,8 +157,7 @@ const NewPocketBookEntry: React.FC = () => {
           <Text style={styles.saveButtonText}>Save</Text>
         </TouchableOpacity>
       </View>
-      </ScrollView>
-    </ScreenWrapper>
+    </ScrollView>
   );
 };
 
@@ -229,4 +238,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewPocketBookEntry;
+export default NewObservationBookEntry;

@@ -10,12 +10,12 @@ const API_BASE_URL = 'https://autoguardapi.leogroup.tech/';
 
 //dummy region start ----------------------------------------------------------
 //dummy  
-const dummyuser:User =   {
-  id:"1",
-  username:"test",
-  name:"test",
-  role:'guard' 
-}
+// const dummyuser:User =   {
+//   id:"1",
+//   username:"test",
+//   name:"test",
+//   role:'guard' 
+// }
 //dummy token
 const token = "dummytoken"
 //region end ----------------------------------------------------------
@@ -44,7 +44,7 @@ const api = {
 
   clearAuthToken: () => {
     //uncomment this when real api has given
-    // delete axios.defaults.headers.common['Authorization'];
+     delete axios.defaults.headers.common['Authorization'];
   },
 
   // Guard Login
@@ -58,10 +58,10 @@ const api = {
     const user = response.data;
 
     console.log("User detail: ",user);
-  
-    await AsyncStorage.setItem('authToken',  token);
-    api.setAuthToken(token);
-    return { user: dummyuser, token };
+    await AsyncStorage.setItem('authToken',  user.token);
+    await AsyncStorage.setItem('authUser', JSON.stringify(user));
+    api.setAuthToken(user.token);
+    return { user: user, token: user.token };
   },
 
   logout: async (): Promise<void> => {
@@ -71,8 +71,12 @@ const api = {
   },
 
   //Password Reset
-  requestPasswordReset: async (username: string): Promise<void> => {
-    await axios.post(`${API_BASE_URL}/auth/request-password-reset`, { username });
+  requestPasswordReset: async (email: string): Promise<void> => {
+    console.log(email)
+    const res = await axios.post(`${API_BASE_URL}api/Users/forgot-password`, { email });
+    if(res.status === 200){
+      return res.data.created_otp;
+    }
   },
 
   // Guard Activity
@@ -118,7 +122,7 @@ const api = {
 
   // Weapons
   getWeaponRegistry: async (): Promise<Weapon[]> => {
-    const response = await axios.get<Weapon[]>(`${API_BASE_URL}/weapons`);
+    const response = await axios.get<Weapon[]>(`${API_BASE_URL}/api/Weapon/fetch-all-weapons`);
     return response.data;
   },
   requestWeapon: async (weaponData: Omit<WeaponRequest, 'id' | 'status'>): Promise<WeaponRequest> => {

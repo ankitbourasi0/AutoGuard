@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert,Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import { CommonActions } from '@react-navigation/native';
@@ -11,7 +11,8 @@ const LoginScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigation = useNavigation();
-
+  const [forgetEmail, setforgetEmail] = useState("")
+  const [modalVisible, setModalVisible] = useState(false);
   // Get login and requestPasswordReset from auth store
   const { login, requestPasswordReset } = useAuthStore();
 
@@ -37,13 +38,16 @@ const LoginScreen: React.FC = () => {
 
   // Handle forgot password logic
   const handleForgotPassword = async () => {
-    if (!username) {
-      Alert.alert('Error', 'Please enter your username first.');
+    if (!forgetEmail) {
+      Alert.alert('Empty', 'Please enter your email first.');
       return;
     }
     try {
-      await requestPasswordReset(username);
-      Alert.alert('Password Reset', 'If an account exists for this username, you will receive further instructions via email.');
+      await requestPasswordReset(forgetEmail);
+      setforgetEmail("");
+      Alert.alert('Success', 'Admin will contact you shortly.');
+      setModalVisible(false); 
+      
     } catch (error) {
       Alert.alert('Error', 'Failed to request password reset. Please try again later.');
     }
@@ -85,9 +89,36 @@ const LoginScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity onPress={handleForgotPassword}>
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
         <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
       </TouchableOpacity>
+      {/* Forgot Password Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Reset Password</Text>
+            <TextInput
+              style={styles.modalInput}
+              placeholder="Enter your email"
+              value={forgetEmail}
+              onChangeText={setforgetEmail}
+              keyboardType="email-address"
+              placeholderTextColor="#8E8E8E"
+            />
+            <TouchableOpacity onPress={handleForgotPassword} style={styles.modalButton}>
+              <Text style={styles.modalButtonText}>Send Reset Link</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       {/* Trigger login on button press */}
       <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
@@ -182,6 +213,56 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10,
   },
-});
+  // Modal Styles
+  modalBackground: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: '80%',
+    backgroundColor: '#FFF',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  modalInput: {
+    height: 50,
+    borderColor: '#8E8E8E',
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    backgroundColor: '#FFF',
+    width: '100%',
+  },
+  modalButton: {
+    backgroundColor: '#3E3E3E',
+    width: '100%',
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  modalButtonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  closeButton: {
+    marginTop: 10,
+    padding: 10,
+  },
+  closeButtonText: {
+    color: '#3E3E3E',
+    fontSize: 16,
+  },
+  }
+);
 
 export default LoginScreen;

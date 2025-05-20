@@ -81,45 +81,53 @@ const CameraModule: React.FC = () => {
     if (image) {
       try {
         // Create a form data object
-        const formData = new FormData();
-        formData.append('file', {
-          uri: image.uri,
-          type: 'image/jpeg',  // Assuming JPEG format, adjust if necessary
-          name: 'upload.jpg',
-        } as any);
+        // const formData = new FormData();
+        // formData.append('file', {
+        //   uri: image.uri,
+        //   type: 'image/jpeg',  // Assuming JPEG format, adjust if necessary
+        //   name: 'upload.jpg',
+        // } as any);
   
-        // Send the image to the backend
-        const response = await fetch('https://deepface-face-verification.onrender.com/analyze_single', {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        // // Send the image to the backend
+        // const response = await fetch('https://deepface-face-verification.onrender.com/analyze_single', {
+        //   method: 'POST',
+        //   body: formData,
+        //   headers: {
+        //     'Content-Type': 'multipart/form-data',
+        //   },
+        // });
   
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        // if (!response.ok) {
+        //   throw new Error(`HTTP error! status: ${response.status}`);
+        // }
   
-        const result = await response.json();
+        // const result = await response.json();
   
-        if (result.verification_result && result.verification_result.verified) {
-          Alert.alert("Verification Successful", "Face verification completed successfully!", [
-            {
-              text: "OK",
-              onPress: () => {
-                navigation.dispatch(
-                  CommonActions.reset({
-                    index: 0,
-                    routes: [{ name: "GuardActivity" }],
-                  })
-                );
-              },
-            },
-          ]);
-        } else {
-          Alert.alert("Verification Failed", result.message || "Face verification failed.");
-        }
+        // if (result.verification_result && result.verification_result.verified) {
+        //   Alert.alert("Verification Successful", "Face verification completed successfully!", [
+        //     {
+        //       text: "OK",
+        //       onPress: () => {
+        //         navigation.dispatch(
+        //           CommonActions.reset({
+        //             index: 0,
+        //             routes: [{ name: "GuardActivity" }],
+        //           })
+        //         );
+        //       },
+        //     },
+        //   ]);
+        // } else {
+        //   Alert.alert("Verification Failed", result.message || "Face verification failed.");
+        // }
+
+        // for now we are directly navigating until face verification implemented 
+        navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [{ name: "GuardActivity" }],
+                    })
+                  );
       } catch (error) {
         console.error("Verification error:", error);
         Alert.alert("Error", "An error occurred during verification. Please try again.");
